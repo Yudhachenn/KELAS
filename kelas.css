@@ -1,0 +1,437 @@
+/* Import shared styles */
+@import url('shared.css');
+
+/* Home Page specific styles */
+.home-page {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Header Section */
+.home-page .header-section {
+    background: linear-gradient(135deg, #3fc9ef, #ffffff);
+    color: rgb(0, 0, 0);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    border-radius: 0 0 1.5rem 1.5rem;
+    margin: 40px auto 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1500px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.home-page .header-section h1 {
+    font-size: 2.5rem;
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+}
+
+.home-page .header-section p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+/* Search and Filter Section */
+.home-page .search-filter-section {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+    padding: 1rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.2s;
+}
+
+.home-page .search-filter-section input,
+.home-page .search-filter-section select {
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    outline: none;
+    transition: all 0.3s;
+    background-color: white;
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Student Cards */
+.home-page .student-card {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: calc(var(--card-index, 0) * 0.1s + 0.3s);
+}
+
+.home-page .student-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.home-page .student-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+/* Detail Page Animations */
+.home-page .max-w-2xl {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.home-page .max-w-2xl img,
+.home-page .max-w-2xl .w-full.h-96 {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.2s;
+}
+
+.home-page .max-w-2xl h2 {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.3s;
+}
+
+.home-page .max-w-2xl p,
+.home-page .max-w-2xl a,
+.home-page .max-w-2xl button {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.4s;
+}
+
+/* Notes Page */
+.home-page .notes-container {
+    max-width: 4xl;
+    margin: 75px auto 0;
+    padding: 0 0.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.home-page .notes-container h2 {
+    color: #1f2937;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 0 1.5rem;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.2s;
+}
+
+.home-page .note-item {
+    background: white;
+    padding: 1.25rem;
+    margin: 1rem 0;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: calc(var(--note-index, 0) * 0.1s + 0.3s);
+}
+
+.home-page textarea {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 120px;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    resize: vertical;
+    margin: 0 0 1rem;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.1s;
+}
+
+.home-page .note-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* More Page */
+.home-page .more-section {
+    margin: 90px 0 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+    position: relative;
+    z-index: 2;
+}
+
+.home-page .vision-mission-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.home-page .vision-mission-card:hover {
+    transform: translateY(-4px);
+}
+
+.home-page .stat-card {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.home-page .stat-card h3 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+/* Social Links */
+.contact-section {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: 0.4s;
+}
+
+.contact-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+}
+
+.home-page .social-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    border-radius: 0.75rem;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin: 0.5rem;
+    font-weight: 500;
+}
+
+.home-page .social-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    background: linear-gradient(135deg, #4338ca, #4f46e5);
+}
+
+.home-page .social-link i {
+    margin-right: 0.75rem;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .contact-section {
+        padding: 1.5rem;
+    }
+    
+    .contact-section h2 {
+        font-size: 1.75rem;
+    }
+    
+    .home-page .social-link {
+        padding: 0.875rem 1.75rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Schedule Page Styles */
+.home-page .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 80px 0 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.home-page .container.mx-auto.px-4.mt-16 {
+    margin-top: 0;
+}
+
+.home-page .page-header h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+.home-page .manage-btn {
+    background-color: #4f46e5;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.home-page .manage-btn:hover {
+    background-color: #4338ca;
+}
+
+.home-page .schedule-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.home-page .schedule-filters select {
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background-color: white;
+    flex: 1;
+}
+
+.home-page .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.home-page .schedule-day {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: calc(var(--day-index, 0) * 0.1s + 0.3s);
+}
+
+.home-page .schedule-item {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+    animation-delay: calc(var(--item-index, 0) * 0.1s + 0.5s);
+}
+
+.home-page .schedule-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading Animation */
+.home-page .loader {
+    border: 4px solid rgba(79, 70, 229, 0.1);
+    border-top: 4px solid #4f46e5;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .home-page .header-section {
+        padding: 2rem 1rem;
+    }
+
+    .home-page .header-section h1 {
+        font-size: 2rem;
+    }
+
+    .home-page .search-filter-section {
+        flex-direction: column;
+    }
+
+    .home-page .note-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .home-page .note-item button {
+        margin-top: 1rem;
+    }
+
+    .home-page .stat-card {
+        margin-bottom: 1rem;
+    }
+
+    .home-page .schedule-filters {
+        flex-direction: column;
+    }
+
+    .home-page .schedule-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-page .header-section h1 {
+        font-size: 1.75rem;
+    }
+
+    .home-page .header-section p {
+        font-size: 1rem;
+    }
+
+    .home-page .student-card img {
+        height: 240px;
+    }
+
+    .home-page .vision-mission-card,
+    .home-page .stat-card {
+        padding: 1.5rem;
+    }
+
+    .home-page .social-link {
+        width: 100%;
+        justify-content: center;
+    }
+}

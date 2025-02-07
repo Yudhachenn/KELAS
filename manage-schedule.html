@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Schedule - KOMSITI</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="manage-schedule.css">
+</head>
+<body>
+
+<div id="root" class="schedule-manager"></div>
+
+<script type="text/babel">
+    function ManageSchedule() {
+        const [schedules, setSchedules] = React.useState(() => {
+            const saved = localStorage.getItem('schedules');
+            return saved ? JSON.parse(saved) : [];
+        });
+        const [editingId, setEditingId] = React.useState(null);
+        const [sortConfig, setSortConfig] = React.useState({ key: null, direction: 'ascending' });
+        const [formData, setFormData] = React.useState({
+            course: '',
+            day: '',
+            startTime: '',
+            endTime: '',
+            room: '',
+            lecturer: '',
+            semester: '',
+            major: ''
+        });
+
+        React.useEffect(() => {
+            localStorage.setItem('schedules', JSON.stringify(schedules));
+        }, [schedules]);
+
+                    // Periksa status login
+const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+if (!isLoggedIn) {
+    window.location.href = 'Admin.html'; // Arahkan ke halaman login jika belum login
+}
+            
+const logout = () => {
+    localStorage.removeItem('isLoggedIn'); // Hapus status login
+    localStorage.removeItem('userName'); // Hapus nama pengguna
+    window.location.href = 'Admin.html'; // Arahkan ke halaman login
+};
+        const handleSubmit = (e) => {
+            e.preventDefault();
+            if (editingId !== null) {
+                setSchedules(schedules.map(schedule => 
+                    schedule.id === editingId ? {...formData, id: editingId} : schedule
+                ));
+                setEditingId(null);
+            } else {
+                setSchedules([...schedules, {...formData, id: Date.now()}]);
+            }
+            setFormData({
+                course: '',
+                day: '',
+                startTime: '',
+                endTime: '',
+                room: '',
+                lecturer: '',
+                semester: '',
+                major: ''
+            });
+        };
+
+        const handleEdit = (schedule) => {
+            setEditingId(schedule.id);
+            setFormData(schedule);
+        };
+
+        const handleSort = (key) => {
+            let direction = 'ascending';
+            if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+                direction = 'descending';
+            }
+            setSortConfig({ key, direction });
+        };
+
+        const sortedSchedules = () => {
+            const sortedData = [...schedules];
+            if (sortConfig.key !== null) {
+                sortedData.sort((a, b) => {
+                    if (sortConfig.key === 'semester') {
+                        return sortConfig.direction === 'ascending' 
+                            ? parseInt(a[sortConfig.key]) - parseInt(b[sortConfig.key])
+                            : parseInt(b[sortConfig.key]) - parseInt(a[sortConfig.key]);
+                    }
+                    if (sortConfig.key === 'day') {
+                        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+                        return sortConfig.direction === 'ascending'
+                            ? days.indexOf(a[sortConfig.key]) - days.indexOf(b[sortConfig.key])
+                            : days.indexOf(b[sortConfig.key]) - days.indexOf(a[sortConfig.key]);
+                    }
+                    if (a[sortConfig.key] < b[sortConfig.key]) {
+                        return sortConfig.direction === 'ascending' ? -1 : 1;
+                    }
+                    if (a[sortConfig.key] > b[sortConfig.key]) {
+                        return sortConfig.direction === 'ascending' ? 1 : -1;
+                    }
+                    return 0;
+                });
+            }
+            return sortedData;
+        };
+
+        const handleDelete = (id) => {
+            setSchedules(schedules.filter(schedule => schedule.id !== id));
+        };
+
+        return (
+            <div className="min-h-screen bg-gray-50">
+                {/* Navigation */}
+                <nav className="bg-[#1f2937] p-4">
+                    <div className="container mx-auto flex justify-between items-center">
+                        <div className="flex items-center">
+                            <img src="komsiti.jpg" alt="KOMSITI" className="h-10 w-10 rounded-full"/>
+                            <span className="text-white text-xl font-bold ml-2">KOMSITI</span>
+                        </div>
+                        <div className="space-x-4">
+                            <a href="kelas.html" className="nav-link">Back to Home</a>
+                        </div>
+                        <button onClick={logout} className="nav-link">Logout</button>
+                    </div>
+                </nav>
+
+                <div className="container mx-auto px-4 py-8">
+                    <h1 className="text-3xl font-bold text-center mb-8">Manage Schedule</h1>
+
+                    {/* Schedule Form */}
+                    <div className="schedule-form mb-12">
+                        <h2 className="text-2xl font-semibold mb-4">
+                            {editingId ? 'Edit Schedule' : 'Add New Schedule'}
+                        </h2>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <input
+                                    type="text"
+                                    placeholder="Course Name"
+                                    value={formData.course}
+                                    onChange={(e) => setFormData({...formData, course: e.target.value})}
+                                    required
+                                />
+                                <select
+                                    value={formData.day}
+                                    onChange={(e) => setFormData({...formData, day: e.target.value})}
+                                    required
+                                >
+                                    <option value="">Select Day</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                </select>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="time"
+                                        value={formData.startTime}
+                                        onChange={(e) => setFormData({...formData, startTime: e.target.value})}
+                                        required
+                                        className="flex-1"
+                                        placeholder="Start Time"
+                                    />
+                                    <input
+                                        type="time"
+                                        value={formData.endTime}
+                                        onChange={(e) => setFormData({...formData, endTime: e.target.value})}
+                                        required
+                                        className="flex-1"
+                                        placeholder="End Time"
+                                    />
+                                </div>
+                                <input
+                                    type="text"
+                                    placeholder="Room"
+                                    value={formData.room}
+                                    onChange={(e) => setFormData({...formData, room: e.target.value})}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="Lecturer"
+                                    value={formData.lecturer}
+                                    onChange={(e) => setFormData({...formData, lecturer: e.target.value})}
+                                    required
+                                />
+                                <select
+                                    value={formData.semester}
+                                    onChange={(e) => setFormData({...formData, semester: e.target.value})}
+                                    required
+                                >
+                                    <option value="">Select Semester</option>
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                    <option value="5">Semester 5</option>
+                                    <option value="6">Semester 6</option>
+                                    <option value="7">Semester 7</option>
+                                    <option value="8">Semester 8</option>
+                                </select>
+                                <select
+                                    value={formData.major}
+                                    onChange={(e) => setFormData({...formData, major: e.target.value})}
+                                    required
+                                >
+                                    <option value="">Select Major</option>
+                                    <option value="Information Systems">Information Systems</option>
+                                    <option value="Informatics Engineering">Informatics Engineering</option>
+                                </select>
+                            </div>
+                            <button type="submit" className="w-full">
+                                {editingId ? 'Update Schedule' : 'Add Schedule'}
+                            </button>
+                        </form>
+                    </div>
+
+                    {/* Schedule List */}
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <h2 className="text-2xl font-semibold mb-4">All Schedules</h2>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th onClick={() => handleSort('course')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                            Course {sortConfig.key === 'course' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+                                        </th>
+                                        <th onClick={() => handleSort('day')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                            Day & Time {sortConfig.key === 'day' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+                                        </th>
+                                        <th onClick={() => handleSort('room')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                            Room {sortConfig.key === 'room' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+                                        </th>
+                                        <th onClick={() => handleSort('lecturer')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                            Lecturer {sortConfig.key === 'lecturer' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+                                        </th>
+                                        <th onClick={() => handleSort('semester')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                            Semester {sortConfig.key === 'semester' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+                                        </th>
+                                        <th onClick={() => handleSort('major')} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100">
+                                            Major {sortConfig.key === 'major' && (sortConfig.direction === 'ascending' ? '↑' : '↓')}
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {sortedSchedules().map(schedule => (
+                                        <tr key={schedule.id}>
+                                            <td className="px-6 py-4 whitespace-nowrap">{schedule.course}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{schedule.day} {schedule.startTime} - {schedule.endTime}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{schedule.room}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{schedule.lecturer}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">Semester {schedule.semester}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{schedule.major}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <button 
+                                                    onClick={() => handleEdit(schedule)}
+                                                    className="bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700 mr-3"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button 
+                                                    onClick={() => handleDelete(schedule.id)}
+                                                    className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    ReactDOM.render(<ManageSchedule />, document.getElementById('root'));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>кσмѕιтι</title>
+    <link rel="icon" href="komsiti.jpg" type="image/png">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="kelas.css">
+</head>
+<body>
+<div id="root" class="home-page"></div>
+<script type="text/babel">
+    // Initial courses data
+    const initialCourses = {
+        'Semester 1': [],
+        'Semester 2': [],
+        'Semester 3': [],
+        'Semester 4': [],
+        'Semester 5': [],
+        'Semester 6': [],
+        'Semester 7': [],
+        'Semester 8': []
+    };
+
+    // Student data
+    const students = [
+        { name: "Alya Rasikah", photo: "https://placehold.co/250x400", info: "NIM : 2321113978 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/al3a_22.2/" },
+        { name: "Calvin Abraham Sianturi", photo: "gambar/calvin.png", info: "NIM : 2321113987 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/calvin_sianturi6/" },
+        { name: "Fernando", photo: "https://placehold.co/250x400", info: "NIM : 2321121730 , Jurusan : Teknik Informatika", instagram: "https://www.instagram.com/nando6778/" },
+        { name: "George Clinton", photo: "gambar/george.png", info: "NIM : 2321113991 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/geo.lte/" },
+        { name: "Jessclyne", photo: "gambar/Jessclyne.png", info: "NIM : 2321113982 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/jessclynechen/" },
+        { name: "Joseph Paaneah", photo: "https://placehold.co/250x400", info: "NIM : 2321121721 , Jurusan : Teknik Informatika", instagram: "https://www.instagram.com/vuirny/" },
+        { name: "Kendrick Halim", photo: "https://placehold.co/250x400", info: "NIM : 2321113973 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/kendrick_halim_/" },
+        { name: "Kevin", photo: "gambar/kevin.png", info: "NIM : 2321113986 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/kevin.v66/" },
+        { name: "Lewis Allen Jingga", photo: "https://placehold.co/250x400", info: "NIM : 2321121736 , Jurusan : Teknik Informatika", instagram: "#" },
+        { name: "Muhammad Farrel Asidiqi", photo: "gambar/Farrel.jpg", info: "NIM : 2321113977 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/faaarrrel/" },
+        { name: "Muhammad Fauzan Ray", photo: "gambar/ray.png", info: "NIM : 2321113975 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/fauzanrray/" },
+        { name: "Neil Armstrong", photo: "https://placehold.co/250x400", info: "NIM : 2321121728 , Jurusan : Teknik Informatika", instagram: "https://www.instagram.com/neicarmsrrong/" },
+        { name: "Ronny Adrian", photo: "gambar/ron.png", info: "NIM : 2321121732 , Jurusan : Teknik Informatika", instagram: "https://www.instagram.com/ronnyadrian/" },
+        { name: "Selena Halawa", photo: "https://placehold.co/250x400", info: "NIM : 2321113985 , Jurusan : Sistem Informasi", instagram: "#" },
+        { name: "Stephanie", photo: "gambar/step.jpg", info: "NIM : 2321113988 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/phanieeee_911/" },
+        { name: "Sudomo", photo: "gambar/sudomo.png", info: "NIM : 2321121726 , Jurusan : Teknik Informatika", instagram: "https://www.instagram.com/sudomo.31/" },
+        { name: "Valencia Guiness", photo: "gambar/valen.jpg", info: "NIM : 2321121729 , Jurusan : Teknik Informatika", instagram: "https://www.instagram.com/valenciaguiness/" },
+        { name: "Veronica", photo: "gambar/vero.png", info: "NIM : 2321113999 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/sisca9328/" },
+        { name: "Vincent", photo: "gambar/vincent.png", info: "NIM : 2321113981 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/vincents.2/" },
+        { name: "William Syahputra", photo: "gambar/william.png", info: "NIM : 2321113979 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/williamsyahputra7/" },
+        { name: "Yudha Chen", photo: "gambar/yudha.jpg", info: "NIM : 2321121737 , Jurusan : Teknik Informatika", instagram: "https://www.instagram.com/yudha_chenn/" },
+        { name: "Zeerhuey Hendrajaya", photo: "gambar/zee.png", info: "NIM : 2321113976 , Jurusan : Sistem Informasi", instagram: "https://www.instagram.com/_zeerhuey43/" }
+    ];
+
+    // Error Boundary Component
+    class ErrorBoundary extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = { hasError: false };
+        }
+
+        static getDerivedStateFromError(error) {
+            return { hasError: true };
+        }
+
+        render() {
+            if (this.state.hasError) {
+                return (
+                    <div className="flex items-center justify-center min-h-screen">
+                        <div className="text-center p-8 bg-red-50 rounded-lg">
+                                <h1 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h1>
+                                <button 
+                                    onClick={() => window.location.reload()} 
+                                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                                >
+                                    Refresh Page
+                                </button>
+                            </div>
+                        </div>
+                    );
+                }
+                return this.props.children;
+            }
+        }
+
+        // Main App Component
+        function App() {
+            const [currentPage, setCurrentPage] = React.useState(() => {
+                const savedPage = localStorage.getItem('currentPage');
+                return savedPage || 'home';
+            });
+            const [loading, setLoading] = React.useState(false);
+            const [courses, setCourses] = React.useState(() => {
+                const savedCourses = localStorage.getItem('courses');
+                return savedCourses ? JSON.parse(savedCourses) : initialCourses;
+            });
+            const [notes, setNotes] = React.useState(() => {
+                const savedNotes = localStorage.getItem('notes');
+                return savedNotes ? JSON.parse(savedNotes) : [];
+            });
+            const [newNote, setNewNote] = React.useState('');
+            const [selectedStudent, setSelectedStudent] = React.useState(null);
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+            const [searchQuery, setSearchQuery] = React.useState('');
+            const [sortBy, setSortBy] = React.useState('name');
+            const [filterMajor, setFilterMajor] = React.useState('all');
+            // Schedule state
+            const [schedules, setSchedules] = React.useState(() => {
+                const savedSchedules = localStorage.getItem('schedules');
+                return savedSchedules ? JSON.parse(savedSchedules) : [];
+            });
+            const [scheduleSemester, setScheduleSemester] = React.useState('all');
+            const [scheduleMajor, setScheduleMajor] = React.useState('all');
+
+            // Save schedules to localStorage
+            React.useEffect(() => {
+                localStorage.setItem('schedules', JSON.stringify(schedules));
+            }, [schedules]);
+
+            React.useEffect(() => {
+                localStorage.setItem('courses', JSON.stringify(courses));
+            }, [courses]);
+
+            React.useEffect(() => {
+                localStorage.setItem('notes', JSON.stringify(notes));
+            }, [notes]);
+
+            // Periksa status login
+const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+if (!isLoggedIn) {
+    window.location.href = 'index.html'; // Arahkan ke halaman login jika belum login
+}
+            
+const logout = () => {
+    localStorage.removeItem('isLoggedIn'); // Hapus status login
+    localStorage.removeItem('userName'); // Hapus nama pengguna
+    window.location.href = 'index.html'; // Arahkan ke halaman login
+};
+            const handlePageChange = (page) => {
+                setLoading(true);
+                setTimeout(() => {
+                    setCurrentPage(page);
+                    localStorage.setItem('currentPage', page);
+                    setLoading(false);
+                    setIsMobileMenuOpen(false);
+                }, 500);
+            };
+
+            const handleAddNote = () => {
+                if (newNote.trim()) {
+                    setNotes(prev => [...prev, newNote]);
+                    setNewNote('');
+                }
+            };
+
+            const handleDeleteNote = (index) => {
+                setNotes(prev => prev.filter((_, i) => i !== index));
+            };
+
+            const handleDownloadNotes = () => {
+                const blob = new Blob([notes.join('\n')], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'notes.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            };
+
+            const handleFileUpload = (event, courseCategory, courseName) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    setCourses(prev => {
+                        const updated = { ...prev };
+                        const courseList = updated[courseCategory];
+                        const course = courseList.find(c => c.name === courseName);
+                        if (course) {
+                            if (!course.files) {
+                                course.files = [];
+                            }
+                            course.files.push({
+                                name: file.name,
+                                url: e.target.result,
+                                uploadDate: new Date().toISOString()
+                            });
+                        }
+                        return updated;
+                    });
+                };
+                reader.readAsDataURL(file);
+            };
+
+            const handleRemoveFile = (courseCategory, courseName, fileIndex) => {
+                setCourses(prev => {
+                    const updated = { ...prev };
+                    const courseList = updated[courseCategory];
+                    const course = courseList.find(c => c.name === courseName);
+                    if (course && course.files) {
+                        course.files.splice(fileIndex, 1);
+                    }
+                    return updated;
+                });
+            };
+
+            const filteredAndSortedStudents = React.useMemo(() => {
+                let filtered = [...students];
+                
+                if (filterMajor !== 'all') {
+                    filtered = filtered.filter(student => {
+                        if (filterMajor === 'SI') {
+                            return student.info.includes('Sistem Informasi');
+                        } else if (filterMajor === 'TI') {
+                            return student.info.includes('Teknik Informatika');
+                        }
+                        return true;
+                    });
+                }
+
+                if (searchQuery) {
+                    filtered = filtered.filter(student =>
+                        student.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+                }
+
+                filtered.sort((a, b) => {
+                    if (sortBy === 'name') {
+                        return a.name.localeCompare(b.name);
+                    } else if (sortBy === 'major') {
+                        return a.info.localeCompare(b.info);
+                    }
+                    return 0;
+                });
+
+                return filtered;
+            }, [students, searchQuery, sortBy, filterMajor]);
+
+            const renderNavbar = () => (
+                <nav className="bg-gray-800 p-4 fixed w-full top-0 z-50">
+                    <div className="container mx-auto flex justify-between items-center">
+                        <div className="flex items-center">
+                            <button onClick={() => handlePageChange('home')}>
+                                <img src="komsiti.jpg" alt="Logo" className="w-10 h-10 mr-2 rounded-full" />
+                            </button>
+                            <button onClick={() => handlePageChange('home')}>
+                                <span className="text-white text-2xl font-bold">кσмѕιтι</span>
+                            </button>
+                        </div>
+                        <div className="hidden md:flex space-x-4">
+                            <button onClick={() => handlePageChange('home')} className="nav-link">Home</button>
+                            <button onClick={() => handlePageChange('schedule')} className="nav-link">Schedule</button>
+                            <button onClick={() => handlePageChange('notes')} className="nav-link">Notes</button>
+                            <button onClick={() => handlePageChange('more')} className="nav-link">More</button>
+                            <button onClick={logout} className="nav-link">Logout</button>
+                        </div>
+                        <button 
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className="md:hidden text-white focus:outline-none"
+                            aria-label="Toggle menu"
+                        >
+                            <div className={`hamburger ${isMobileMenuOpen ? 'open' : ''}`}>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </button>
+                    </div>
+                    {isMobileMenuOpen && (
+                        <div className="mobile-menu open">
+                            <button onClick={() => handlePageChange('home')} className="block w-full text-left text-white p-2">Home</button>
+                            <button onClick={() => handlePageChange('schedule')} className="block w-full text-left text-white p-2">Schedule</button>
+                            <button onClick={() => handlePageChange('notes')} className="block w-full text-left text-white p-2">Notes</button>
+                            <button onClick={() => handlePageChange('more')} className="block w-full text-left text-white p-2">More</button>
+                            <button onClick={logout} className="nav-link">Logout</button>
+                        </div>
+                    )}
+                </nav>
+            );
+
+            const renderHomePage = () => (
+<div className="container mx-auto mt-16 px-4">
+    <header className="header-section">
+        <h1 className="text-4xl md:text-5xl font-bold">KOMSITI COMMUNITY</h1>
+        <p className="text-base md:text-lg mt-2 px-4">Welcome to our collaborative learning community where Information Systems and Informatics Engineering students come together</p>
+    </header>
+
+                    <div className="search-filter-section mx-2 md:mx-4">
+                        <div className="flex-1 min-w-0 md:min-w-[200px]">
+                            <input
+                                type="text"
+                                placeholder="Search by name..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            />
+                        </div>
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        >
+                            <option value="name">Sort by Name</option>
+                            <option value="major">Sort by Major</option>
+                        </select>
+                        <select
+                            value={filterMajor}
+                            onChange={(e) => setFilterMajor(e.target.value)}
+                            className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        >
+                            <option value="all">All Majors</option>
+                            <option value="SI">SI</option>
+                            <option value="TI">TI</option>
+                        </select>
+                    </div>
+
+                    <div className="flex flex-col">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+                            {filteredAndSortedStudents.map((student, index) => (
+                                <div 
+                                    key={index} 
+                                    className="student-card cursor-pointer"
+                                    style={{"--card-index": index}}
+                                    onClick={() => {
+                                        setSelectedStudent(student);
+                                        handlePageChange('detail');
+                                    }}
+                                >
+                                    {student.photo === "https://placehold.co/250x400" ? (
+                                        <div className="w-full h-[250px] bg-indigo-600 flex items-center justify-center text-white text-5xl font-bold">
+                                            {student.name.split(' ').map(word => word[0]).join('')}
+                                        </div>
+                                    ) : (
+                            <img src={student.photo} alt={student.name} className="w-full" onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = 'https://placehold.co/250x400';
+                                        }} />
+                                    )}
+                                    <div className="p-6 flex flex-col h-full">
+                                        <h3 className="text-xl font-bold mb-2">{student.name}</h3>
+                                        <p className="text-sm text-gray-600 mb-4 flex-grow">
+                                            {student.info.split(',')[1].trim()}
+                                        </p>
+                                        <div className="flex items-center text-indigo-600">
+                                            <span>View Details</span>
+                                            <i className="fas fa-arrow-right ml-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="contact-section mt-6 md:mt-8 mb-4 md:mb-6">
+                            <h2>Connect With Us</h2>
+                            <div className="flex flex-wrap justify-center gap-3">
+                                <a href="https://www.instagram.com/komsiti_25/" target="_blank" rel="noopener noreferrer" className="social-link">
+                                    <i className="fab fa-instagram"></i>
+                                    <span>Instagram</span>
+                                </a>
+                                <a href="https://wa.me/+6281265574902" target="_blank" rel="noopener noreferrer" className="social-link">
+                                    <i className="fab fa-whatsapp"></i>
+                                    <span>WhatsApp</span>
+                                </a>
+                                <a href="https://youtube.com/@komsiti2024?si=42LKYWpcLYNgRF3P" target="_blank" rel="noopener noreferrer" className="social-link">
+                                    <i className="fab fa-youtube"></i>
+                                    <span>YouTube</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const renderDetailPage = () => (
+                <div className="container mx-auto p-4 mt-16">
+                    {selectedStudent && (
+                        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+                            {selectedStudent.photo === "https://placehold.co/250x400" ? (
+                                <div className="w-full h-96 bg-indigo-600 flex items-center justify-center text-white text-6xl font-bold">
+                                    {selectedStudent.name.split(' ').map(word => word[0]).join('')}
+                                </div>
+                            ) : (
+                                <img 
+                                    src={selectedStudent.photo} 
+                                    alt={selectedStudent.name}
+                                    className="w-full h-96 object-cover"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = 'https://placehold.co/250x400';
+                                    }}
+                                />
+                            )}
+                            <div className="p-6">
+                                <h2 className="text-3xl font-bold mb-4">{selectedStudent.name}</h2>
+                                <p className="text-gray-600 mb-4">{selectedStudent.info}</p>
+                                {selectedStudent.instagram && selectedStudent.instagram !== '#' && (
+                                    <a 
+                                        href={selectedStudent.instagram}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center text-pink-500 hover:text-pink-600"
+                                    >
+                                        <i className="fab fa-instagram mr-2"></i>
+                                        Instagram Profile
+                                    </a>
+                                )}
+                                <button
+                                    onClick={() => handlePageChange('home')}
+                                    className="mt-6 block w-full text-center bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                                >
+                                    Back to Home
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+
+            const renderNotesPage = () => (
+                <div className="container mx-auto px-4">
+                    <div className="notes-container">
+                        <h2>Notes</h2>
+                        <div className="bg-white rounded-lg shadow-lg p-6">
+                            <div className="mb-4">
+                                <textarea
+                                    value={newNote}
+                                    onChange={(e) => setNewNote(e.target.value)}
+                                    placeholder="Write your note here..."
+                                    className="w-full p-3 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    rows="4"
+                                />
+                                <div className="flex justify-between mt-2">
+                                    <button
+                                        onClick={handleAddNote}
+                                        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                                    >
+                                        Add Note
+                                    </button>
+                                    <button
+                                        onClick={handleDownloadNotes}
+                                        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+                                    >
+                                        Download Notes
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="space-y-4">
+                    {notes.map((note, index) => (
+                        <div key={index} className="note-item flex justify-between items-center" style={{"--note-index": index}}>
+                                        <p className="flex-1">{note}</p>
+                                        <button
+                                            onClick={() => handleDeleteNote(index)}
+                                            className="ml-4 text-red-500 hover:text-red-700"
+                                        >
+                                            <i className="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const renderMorePage = () => {
+                const totalStudents = students.length;
+                const siStudents = students.filter(s => s.info.includes('Sistem Informasi')).length;
+                const tiStudents = students.filter(s => s.info.includes('Teknik Informatika')).length;
+
+                return (
+                    <div className="container mx-auto p-4 mt-16">
+                        {/* About Section */}
+                        <div className="more-section fade-in">
+                            <h2 className="text-4xl font-bold mb-8 text-center">About KOMSITI</h2>
+                            <p className="text-lg mb-8 text-center max-w-3xl mx-auto">
+                                KOMSITI (Komunitas Sistem Informasi dan Teknik Informatika) is a vibrant community
+                                of students from Information Systems and Informatics Engineering programs. Our community
+                                serves as a platform for academic collaboration, knowledge sharing, and professional development.
+                            </p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                                <div className="vision-mission-card">
+                                    <h3 className="text-2xl font-bold mb-6">Vision</h3>
+                                    <p className="text-lg">
+                                        To become a leading student community that fosters innovation, collaboration,
+                                        and excellence in information technology education and practice.
+                                    </p>
+                                </div>
+                                <div className="vision-mission-card">
+                                    <h3 className="text-2xl font-bold mb-6">Mission</h3>
+                                    <ul className="space-y-3 text-lg">
+                                        <li className="flex items-center">
+                                            <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                                            Facilitate academic collaboration between students
+                                        </li>
+                                        <li className="flex items-center">
+                                            <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                                            Promote knowledge sharing and skill development
+                                        </li>
+                                        <li className="flex items-center">
+                                            <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                                            Build strong connections within the IT community
+                                        </li>
+                                        <li className="flex items-center">
+                                            <i className="fas fa-check-circle text-green-500 mr-2"></i>
+                                            Support student growth and professional development
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Statistics Section */}
+                        <div className="more-section fade-in">
+                            <h2 className="text-4xl font-bold mb-8 text-center">Class Statistics</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="stat-card">
+                                    <i className="fas fa-users text-4xl mb-4"></i>
+                                    <h3>{totalStudents}</h3>
+                                    <p>Total Students</p>
+                                </div>
+                                <div className="stat-card" style={{background: 'linear-gradient(135deg, #10B981, #34D399)'}}>
+                                    <i className="fas fa-laptop-code text-4xl mb-4"></i>
+                                    <h3>{siStudents}</h3>
+                                    <p>Information Systems</p>
+                                </div>
+                                <div className="stat-card" style={{background: 'linear-gradient(135deg, #8B5CF6, #A78BFA)'}}>
+                                    <i className="fas fa-microchip text-4xl mb-4"></i>
+                                    <h3>{tiStudents}</h3>
+                                    <p>Informatics Engineering</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Activities Section */}
+                        <div className="more-section fade-in">
+                            <h2 className="text-4xl font-bold mb-8 text-center">Our Activities</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="vision-mission-card">
+                                    <i className="fas fa-laptop-code text-4xl text-indigo-600 mb-4"></i>
+                                    <h3 className="text-xl font-bold mb-4">Technical Workshops</h3>
+                                    <p className="text-lg">
+                                        Regular workshops on programming, web development, and emerging technologies
+                                        to enhance technical skills.
+                                    </p>
+                                </div>
+                                <div className="vision-mission-card">
+                                    <i className="fas fa-users text-4xl text-indigo-600 mb-4"></i>
+                                    <h3 className="text-xl font-bold mb-4">Study Groups</h3>
+                                    <p className="text-lg">
+                                        Collaborative learning sessions where students help each other master
+                                        course materials and solve complex problems.
+                                    </p>
+                                </div>
+                                <div className="vision-mission-card">
+                                    <i className="fas fa-lightbulb text-4xl text-indigo-600 mb-4"></i>
+                                    <h3 className="text-xl font-bold mb-4">Innovation Projects</h3>
+                                    <p className="text-lg">
+                                        Team projects focused on creating innovative solutions to real-world
+                                        problems using technology.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Community Values Section */}
+                        <div className="more-section fade-in">
+                            <h2 className="text-4xl font-bold mb-8 text-center">Our Values</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                <div className="vision-mission-card text-center">
+                                    <i className="fas fa-handshake text-4xl text-indigo-600 mb-4"></i>
+                                    <h3 className="text-xl font-bold mb-4">Collaboration</h3>
+                                    <p>Working together to achieve greater results</p>
+                                </div>
+                                <div className="vision-mission-card text-center">
+                                    <i className="fas fa-brain text-4xl text-indigo-600 mb-4"></i>
+                                    <h3 className="text-xl font-bold mb-4">Innovation</h3>
+                                    <p>Embracing new ideas and creative solutions</p>
+                                </div>
+                                <div className="vision-mission-card text-center">
+                                    <i className="fas fa-graduation-cap text-4xl text-indigo-600 mb-4"></i>
+                                    <h3 className="text-xl font-bold mb-4">Learning</h3>
+                                    <p>Continuous growth and skill development</p>
+                                </div>
+                                <div className="vision-mission-card text-center">
+                                    <i className="fas fa-heart text-4xl text-indigo-600 mb-4"></i>
+                                    <h3 className="text-xl font-bold mb-4">Community</h3>
+                                    <p>Supporting and uplifting each other</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Contact Section with Enhanced Design */}
+                        <div className="more-section fade-in">
+                            <h2 className="text-4xl font-bold mb-8 text-center">Get in Touch</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <a href="https://www.instagram.com/komsiti_25/" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer" 
+                                   className="vision-mission-card text-center hover:scale-105 transition-transform">
+                                    <i className="fab fa-instagram text-5xl text-pink-500 mb-4"></i>
+                                    <h3 className="text-xl font-bold mb-2">Instagram</h3>
+                                    <p>Follow us for updates and events</p>
+                                </a>
+                                <a href="https://wa.me/+6281265574902" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer" 
+                                   className="vision-mission-card text-center hover:scale-105 transition-transform">
+                                    <i className="fab fa-whatsapp text-5xl text-green-500 mb-4"></i>
+                                    <h3 className="text-xl font-bold mb-2">WhatsApp</h3>
+                                    <p>Chat with us directly</p>
+                                </a>
+                                <a href="https://youtube.com/@komsiti2024?si=42LKYWpcLYNgRF3P" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer" 
+                                   className="vision-mission-card text-center hover:scale-105 transition-transform">
+                                    <i className="fab fa-youtube text-5xl text-red-500 mb-4"></i>
+                                    <h3 className="text-xl font-bold mb-2">YouTube</h3>
+                                    <p>Watch our video content</p>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                );
+            };
+
+            // Schedule states
+            const [newSchedule, setNewSchedule] = React.useState({
+                day: 'Monday',
+                startTime: '',
+                endTime: '',
+                course: '',
+                semester: '1',
+                major: 'SI',
+                room: ''
+            });
+            const [editingSchedule, setEditingSchedule] = React.useState(null);
+            const [editIndex, setEditIndex] = React.useState(null);
+
+            const handleScheduleSubmit = (e) => {
+                e.preventDefault();
+                setSchedules(prev => [...prev, newSchedule]);
+                setNewSchedule({
+                    day: 'Monday',
+                    startTime: '',
+                    endTime: '',
+                    course: '',
+                    semester: '1',
+                    major: 'SI',
+                    room: ''
+                });
+            };
+
+            const renderSchedulePage = () => {
+                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+                const filteredSchedules = schedules.filter(schedule => {
+                    // Filter by semester
+                    if (scheduleSemester !== 'all' && schedule.semester !== scheduleSemester) return false;
+                    
+                    // Filter by major
+                    if (scheduleMajor !== 'all') {
+                        if (scheduleMajor === 'SI' && schedule.major !== 'Information Systems') return false;
+                        if (scheduleMajor === 'TI' && schedule.major !== 'Informatics Engineering') return false;
+                    }
+                    
+                    return true;
+                });
+
+                return (
+                    <div className="container mx-auto px-4 mt-16">
+                        <div className="page-header">
+                            <h2>Class Schedule</h2>
+                            <a 
+                                href="Admin.html" 
+                                className="manage-btn"
+                            >
+                                Manage Schedules
+                            </a>
+                        </div>
+
+                        {/* Schedule Controls */}
+                        <div className="schedule-controls mb-8">
+                            <div className="schedule-filters">
+                                <select 
+                                    value={scheduleSemester}
+                                    onChange={e => setScheduleSemester(e.target.value)}
+                                    className="flex-1"
+                                >
+                                    <option value="all">All Semesters</option>
+                                    {[1,2,3,4,5,6,7,8].map(num => (
+                                        <option key={num} value={num.toString()}>Semester {num}</option>
+                                    ))}
+                                </select>
+                                <select 
+                                    value={scheduleMajor}
+                                    onChange={e => setScheduleMajor(e.target.value)}
+                                    className="flex-1"
+                                >
+                                    <option value="all">All Majors</option>
+                                    <option value="SI">SI</option>
+                                    <option value="TI">TI</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Schedule Grid */}
+                        <div className="schedule-grid">
+                            {days.map((day, dayIndex) => (
+                                <div key={day} className="schedule-day" style={{"--day-index": dayIndex}}>
+                                    <h3 className="text-xl font-bold mb-4">{day}</h3>
+                                    {filteredSchedules
+                                        .filter(schedule => schedule.day === day)
+                        .sort((a, b) => a.startTime.localeCompare(b.startTime))
+                                        .map((schedule, itemIndex) => (
+                                            <div key={itemIndex} className="schedule-item" style={{"--item-index": itemIndex}}>
+                                                <div className="font-bold text-lg mb-2">{schedule.course}</div>
+                                                <div className="text-gray-600">
+                                                    <div className="flex items-center mb-1">
+                                                        <i className="far fa-clock mr-2"></i>
+                                                        {schedule.startTime} - {schedule.endTime}
+                                                    </div>
+                                                    <div className="flex items-center mb-1">
+                                                        <i className="fas fa-map-marker-alt mr-2"></i>
+                                                        Room {schedule.room}
+                                                    </div>
+                                                    <div className="flex items-center">
+                                                        <i className="fas fa-graduation-cap mr-2"></i>
+                                                        Semester {schedule.semester} - {schedule.major}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    {filteredSchedules.filter(schedule => schedule.day === day).length === 0 && (
+                                        <div className="text-gray-500 italic">No classes scheduled</div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="min-h-screen">
+                    {renderNavbar()}
+                    {loading ? (
+                        <div className="flex justify-center items-center h-screen">
+                            <div className="loader"></div>
+                        </div>
+                    ) : (
+                        <>
+                            {currentPage === 'home' && renderHomePage()}
+                            {currentPage === 'detail' && renderDetailPage()}
+                            {currentPage === 'schedule' && renderSchedulePage()}
+                            {currentPage === 'notes' && renderNotesPage()}
+                            {currentPage === 'more' && renderMorePage()}
+                        </>
+                    )}
+                </div>
+            );
+        }
+
+        // Create root and render
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(
+            <ErrorBoundary>
+                <App />
+            </ErrorBoundary>
+        );
+
+    </script>
+</body>
+</html>
