@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>кσмѕιтι - Admin</title>
+    <link rel="icon" href="komsiti.jpg" type="image/png">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, skyblue, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            animation: fadeIn 1s; /* Animasi fade-in saat halaman dimuat */
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .login-container {
+            background: black;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 90%; /* Responsif: lebar 90% */
+            max-width: 400px; /* Maksimal lebar 400px */
+            text-align: center;
+            transition: transform 0.3s; /* Transisi saat hover */
+        }
+
+        .login-container:hover {
+            transform: scale(1.02); /* Efek zoom saat hover */
+        }
+        h2 {
+            margin-bottom: 20px;
+            margin-right: 20px;
+            color: whitesmoke;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            margin-right: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: whitesmoke;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s, box-shadow 0.3s; /* Transisi border dan shadow */
+        }
+
+        .form-group input:focus {
+            border-color: skyblue;
+            outline: none;
+            box-shadow: 0 0 5px skyblue; /* Efek shadow saat fokus */
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: seagreen;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s; /* Transisi background dan transform */
+        }
+
+        .btn:hover {
+            background-color: #2575fc;
+            transform: scale(1.05); /* Efek zoom saat hover */
+        }
+
+        .notification {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            transition: opacity 0.3s; /* Transisi opacity */
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Login Admin</h2>
+    <div class="form-group">
+        <label for="nim">NIM:</label>
+        <input type="text" id="nim" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+    </div>
+    <button class="btn" onclick="login()">Login</button>
+    <div class="notification" id="notification"></div>
+</div>
+
+<script>
+    // Data pengguna (NIM dan nama) dengan password yang berbeda
+    const users = {
+        "2321113982": { name: "Jessclyne", password: "jeje123" },
+        "2321121732": { name: "Ronny Adrian", password: "ron123" },
+        "2321113979": { name: "William Syahputra", password: "will123" },
+        "2321121737": { name: "Yudha Chen", password: "yud123" },
+    };
+
+    function login() {
+        const nim = document.getElementById('nim').value;
+        const password = document.getElementById('password').value;
+
+        // Validasi input
+        if (!nim || !password) {
+            showNotification('NIM dan password tidak boleh kosong!', '#dc3545');
+            return;
+        }
+
+        // Simulasi validasi login
+        if (users[nim] && users[nim].password === password) {
+            const name = users[nim].name;
+            showNotification(`Welcome Admin, ${name}!`, '#28a745');
+
+            // Simpan status login di localStorage
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userName', name);
+
+            // Redirect ke kelas.html setelah 2 detik
+            setTimeout(() => {
+                window.location.href = 'manage-schedule.html';
+            }, 2000);
+        } else {
+            showNotification('NIM atau password tidak tersedia!', '#dc3545');
+        }
+    }
+
+    function showNotification(message, backgroundColor) {
+        const notification = document.getElementById('notification');
+        notification.innerText = message;
+        notification.style.display = 'block';
+        notification.style.backgroundColor = backgroundColor;
+    }
+    // Tambahkan event listener pada input
+    document.getElementById('nim').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            login(); // Panggil fungsi login jika tombol Enter ditekan
+        }
+    });
+
+    document.getElementById('password').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            login(); // Panggil fungsi login jika tombol Enter ditekan
+        }
+    });
+</script>
+</body>
+</html>
