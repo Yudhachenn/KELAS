@@ -41,16 +41,6 @@ nav {
     max-height: 250px;
 }
 
-@media (max-width: 768px) {
-    .nav-link {
-        display: none;
-    }
-
-    .mobile-menu {
-        display: block;
-    }
-}
-
 .mobile-menu button {
     transform: translateY(-20px);
     opacity: 0;
@@ -62,7 +52,6 @@ nav {
 .mobile-menu.open button {
     transform: translateY(0);
     opacity: 1;
-    transition: all 0.3s ease;
 }
 
 .mobile-menu.open button:nth-child(1) { transition-delay: 0.1s; }
@@ -80,11 +69,6 @@ nav {
     height: 24px;
     position: relative;
     cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.hamburger:hover {
-    transform: rotate(90deg);
 }
 
 .hamburger span {
