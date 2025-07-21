@@ -113,6 +113,26 @@
             });
             const [scheduleSemester, setScheduleSemester] = React.useState('all');
             const [scheduleMajor, setScheduleMajor] = React.useState('all');
+            const [isDarkMode, setIsDarkMode] = React.useState(() => {
+                const savedMode = localStorage.getItem('darkMode');
+                return savedMode ? JSON.parse(savedMode) : false;
+            });
+
+            const toggleDarkMode = () => {
+                setIsDarkMode(prevMode => {
+                    const newMode = !prevMode;
+                    localStorage.setItem('darkMode', JSON.stringify(newMode));
+                    return newMode;
+                });
+            };
+
+            React.useEffect(() => {
+                if (isDarkMode) {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+            }, [isDarkMode]);
 
             // Save schedules to localStorage
             React.useEffect(() => {
@@ -260,6 +280,9 @@ const logout = () => {
                             <button onClick={() => handlePageChange('notes')} className="nav-link">Notes</button>
                             <button onClick={() => handlePageChange('more')} className="nav-link">More</button>
                             <button onClick={logout} className="nav-link">Logout</button>
+                            <button onClick={toggleDarkMode} className="nav-link">
+                                <i className={`fas ${isDarkMode ? 'fa-sun' : 'fa-moon'}`}></i>
+                            </button>
                         </div>
                         <button 
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -280,6 +303,9 @@ const logout = () => {
                             <button onClick={() => handlePageChange('notes')} className="block w-full text-left text-white p-2">Notes</button>
                             <button onClick={() => handlePageChange('more')} className="block w-full text-left text-white p-2">More</button>
                             <button onClick={logout} className="nav-link">Logout</button>
+                            <button onClick={toggleDarkMode} className="block w-full text-left text-white p-2">
+                                <i className={`fas ${isDarkMode ? 'fa-sun' : 'fa-moon'}`}></i> Dark Mode
+                            </button>
                         </div>
                     )}
                 </nav>
