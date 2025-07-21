@@ -1,10 +1,29 @@
 /* Global Styles */
+:root {
+    --background-color-light: #f5f5f5;
+    --text-color-light: #333;
+    --card-bg-light: white;
+    --header-bg-light: linear-gradient(135deg, #667eea, #764ba2);
+
+    --background-color-dark: #121212;
+    --text-color-dark: #e0e0e0;
+    --card-bg-dark: #1e1e1e;
+    --header-bg-dark: linear-gradient(135deg, #3c4280, #4b2e6b);
+}
+
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f5f5f5;
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
 }
 
 /* Navigation Styles */
